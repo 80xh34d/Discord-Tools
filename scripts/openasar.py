@@ -33,11 +33,11 @@ class OpenAsar:
             )[0]
         except IndexError:
             return print(f"-- {client} is not installed.")
-        DiscordUtils.kill_discord()
+        DiscordUtils.kill_discord(client)
         shutil.copy(path, f"{path}.backup")
         self.download_openasar(path)
         print(f"-- Installed OpenAsar")
-        DiscordUtils.run_discord()
+        DiscordUtils.run_discord(client)
 
     def uninstall(self, client: str) -> None:
         """Uninstalls OpenAsar from the specified client"""
@@ -51,7 +51,7 @@ class OpenAsar:
             return print(f"-- {client} is not installed.")
         if not os.path.isfile(f"{path}.backup"):
             return print(f"-- OpenAsar is not installed.")
-        DiscordUtils.kill_discord()
+        DiscordUtils.kill_discord(client)
         shutil.copy(f"{path}.backup", path)
         os.remove(f"{path}.backup")
         try:
@@ -64,9 +64,10 @@ class OpenAsar:
             f.seek(0)
             json.dump(settings, f, indent=4)
         print(f"-- Uninstalled OpenAsar")
-        DiscordUtils.run_discord()
+        DiscordUtils.run_discord(client)
 
-if __name__ == '__main__':
+
+def main() -> None:
     clients = {
         "1": "Discord",
         "2": "DiscordPTB",
@@ -80,3 +81,6 @@ if __name__ == '__main__':
     if client in clients:
         asar = OpenAsar()
         asar.install(clients[client])
+
+if __name__ == '__main__':
+    main()
