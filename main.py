@@ -32,7 +32,7 @@ class DiscordTools:
     def enable_dev_console(self, enable: bool = True, client: str = "Discord") -> None:
         """Enables the developer console in Discord's stable client"""
         try:
-            path = glob(DiscordUtils.settings(client))[0]
+            path = glob(DiscordUtils().settings(client))[0]
         except IndexError:
             return print(f"-- settings.json does not exist for {client}")
         with open(path, "r+") as f:
