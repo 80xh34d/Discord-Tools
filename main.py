@@ -13,12 +13,21 @@ class DiscordTools:
     def __init__(self) -> None:
         self.root = os.path.abspath(os.path.join(__file__, os.pardir))
 
+    def program_info(self) -> None:
+        pass
+
     def exit(self) -> None:
         print("-- Goodbye!")
         raise SystemExit
 
     def clear(self) -> None:
         os.system("cls" if os.name in ("nt", "dos") else "clear")
+
+    def clear_discord_cache(self, client: str) -> None:
+        pass
+
+    def clear_local_storage(self, client: str) -> None:
+        pass
 
     def enable_dev_console(self, enable: bool = True, client: str = "Discord") -> None:
         """Enables the developer console in Discord's stable client"""
@@ -38,10 +47,10 @@ class DiscordTools:
     def main(self) -> None:
         choices = {
             "1": self.enable_dev_console,
-            "2": self,
-            "3": self,
-            "4": OpenAsar,
-            "5": self,
+            "2": self.clear_discord_cache,
+            "3": self.clear_local_storage,
+            "4": OpenAsar().install,
+            "5": self.program_info,
             "6": self.exit
         }
         while True:
