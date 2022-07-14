@@ -1,6 +1,7 @@
 import json
 import os
 from glob import glob
+import shutil
 
 from scripts.openasar import OpenAsar
 from scripts.discordutils import DiscordUtils
@@ -12,6 +13,14 @@ __author__ = "boxhead#4466"
 class DiscordTools:
     def __init__(self) -> None:
         self.root = os.path.abspath(os.path.join(__file__, os.pardir))
+        self.roaming = os.getenv("appdata")
+
+def find_clients() -> None:
+    roaming = os.getenv("appdata")
+    path = os.path.join(roaming, "discord*")
+    y = glob(path)
+    print(y)
+
 
     def program_info(self) -> None:
         pass
@@ -27,7 +36,10 @@ class DiscordTools:
         pass
 
     def clear_local_storage(self, client: str) -> None:
-        pass
+        DiscordUtils.kill_discord(client)
+        path = glob(os.path.join(self.roaming, client, "Local Storage", "leveldb"))
+        if path:
+            shutil.rmtree(path[0])
 
     def enable_dev_console(self, enable: bool = True, client: str = "Discord") -> None:
         """Enables the developer console in Discord's stable client"""
@@ -45,6 +57,7 @@ class DiscordTools:
         print(f"-- Enabled {client} developer console")
 
     def main(self) -> None:
+        client = "discordcanary"
         choices = {
             "1": self.enable_dev_console,
             "2": self.clear_discord_cache,
@@ -57,11 +70,11 @@ class DiscordTools:
             self.clear()
             print("-------------------------------")
             print(" / Discord Tools Menu v1.0.0 \ ")
-            print(" \   Coded by Boxhead#4466   / ")
+            print(" \  By boxhead#4466 & fa00j  / ")
             print("-------------------------------\n")
-            print("Found clients -")
+            print("Found clients:")
             print("Discord, DiscordPTB, DiscordCanary")
-            print("\n~/tools/main")
+            print("\n./tools/main")
             print("\t1. Developer Console")
             print("\t2. Clear Cache")
             print("\t3. Clear Local Storage")
@@ -71,7 +84,7 @@ class DiscordTools:
             c = input("Choice [1|2|3|4|5|6]: ")
             if c in "123456":
                 break
-        choices[c]()
+        choices[c](client)
         # OpenAsar("Discord").install()
         # self.enable_dev_console(False)
         # self.uninstall_openasar("DiscordPTB")
